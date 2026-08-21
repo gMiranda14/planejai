@@ -7,7 +7,9 @@ import {
   Wallet,
 } from 'lucide-react'
 
-import type { InsightData } from '@/services/aiService'
+
+
+import type { InsightData, ChatMessage } from '@/services/aiService'
 
 import type { FormStepProps } from '../components/features/Simulation/FormStep'
 
@@ -97,4 +99,5 @@ export type SimulationRecord = SimulationFormData & {
   id: string
   createdAt?: string
   insight?: InsightData
+   chatHistory?: ChatMessage[]
 }

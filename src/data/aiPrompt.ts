@@ -1,3 +1,4 @@
+import type { InsightData } from '@/services/aiService'
 import { parseCurrency } from '@/utils/currency'
 import { calcMonthlySavings } from '@/utils/simulation'
 
@@ -63,4 +64,41 @@ export function buildAIPrompt(simulation: SimulationRecord) {
       - "viable": saldo após reserva para a meta é maior ou igual a 0
       - "needs_adjustment": saldo negativo de até 20% do valor da economia mensal necessária
       - "unfeasible": saldo negativo superior a 20% do valor da economia mensal necessária`
+}
+
+export function buildChatSystemPrompt(
+  simulation: SimulationRecord,
+  insight: InsightData,
+) {
+  const { income, expenses, debts, goalName, goalAmount, goalDeadline } =
+    simulation
+
+  const monthlySavings = calcMonthlySavings(simulation)
+
+  return `Você é um educador financeiro especializado em finanças pessoais, conversando diretamente com o usuário
+    dentro do app Planej.ai. Você já gerou um diagnóstico financeiro personalizado para ele; agora ele pode fazer
+    perguntas de acompanhamento sobre esse diagnóstico.
+
+    Dados da simulação do usuário:
+    - Renda mensal bruta: ${income}
+    - Custos fixos essenciais: ${expenses}
+    - Dívidas e parcelas mensais: ${debts}
+    - Valor disponível por mês: ${monthlySavings} reais
+    - Meta: ${goalName}
+    - Custo da meta: ${goalAmount}
+    - Prazo desejado: ${goalDeadline} meses
+
+    Diagnóstico já gerado para o usuário:
+    ${JSON.stringify(insight)}
+
+    Regras para suas respostas:
+    - Responda sempre em português do Brasil, em segunda pessoa ("você tem...", "sua meta...")
+    - Use linguagem clara, didática e encorajadora, para alguém sem conhecimento financeiro
+    - Baseie suas respostas nos dados da simulação e no diagnóstico acima, sem inventar números novos
+    - Seja objetivo: responda em no máximo 2 a 3 parágrafos curtos
+    - Não repita o diagnóstico inteiro, responda diretamente à pergunta feita
+    - NUNCA use símbolos de markdown: proibido usar **, *, #, _ ou qualquer outro caractere de formatação
+    - Se precisar listar itens (ex: opções de investimento), coloque cada item em uma linha separada
+      começando com "- " (hífen e espaço), sem numeração e sem negrito no nome do item
+    - Separe parágrafos diferentes com uma linha em branco entre eles`
 }
