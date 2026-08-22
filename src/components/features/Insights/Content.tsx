@@ -50,7 +50,7 @@ const statusStyles = {
 }
 
 export function Content({ insight }: ContentProps) {
-  const status = statusStyles[insight.feasibility.status] ?? null
+  const status = statusStyles[insight.feasibility?.status] ?? null
 
   return (
     <>
@@ -67,32 +67,32 @@ export function Content({ insight }: ContentProps) {
             </span>
           )}
         </div>
-        <Paragraph>{insight.feasibility.content}</Paragraph>
+        <Paragraph>{insight.feasibility?.content ?? ''}</Paragraph>
       </section>
 
       <section>
         <SectionTitle>💰 Diagnóstico Financeiro</SectionTitle>
-        <Paragraph>{insight.diagnosis.content}</Paragraph>
+        <Paragraph>{insight.diagnosis?.content ?? ''}</Paragraph>
       </section>
 
       <section>
         <SectionTitle>📋 Sugestões Práticas</SectionTitle>
-        <OrderedList items={insight.suggestions.items} />
+        <OrderedList items={insight.suggestions?.items ?? []} />
       </section>
 
       <section>
         <SectionTitle>💡 Como Aumentar sua Renda</SectionTitle>
-        <OrderedList items={insight.extraIncome.items} />
+        <OrderedList items={insight.extraIncome?.items ?? []} />
       </section>
 
       <section>
         <SectionTitle>🏦 Sugestões de Investimento</SectionTitle>
-        <OrderedList items={insight.investment.items} />
+        <OrderedList items={insight.investment?.items ?? []} />
       </section>
 
       <section>
         <SectionTitle>🚀 Mensagem Final</SectionTitle>
-        <Paragraph>{insight.motivation.content}</Paragraph>
+        <Paragraph>{insight.motivation?.content ?? ''}</Paragraph>
       </section>
     </>
   )
